@@ -11,19 +11,14 @@ IMAGE_INSTALL += "gstreamer1.0 gst-player \
 				gstreamer1.0-plugins-bad \
 				gstreamer1.0-meta-base gstreamer1.0-rtsp-server \
 				jam-stapl \
-				aero-watchdog \
-				aero-utils \
 				px4-fw \
-				mavlink-router \
-				efibootmgr \
 				camera-streaming-daemon \
 				"
 
+IMAGE_INSTALL += "mavlink-router"
+
 # Allow to easily copy files to/from host
 IMAGE_INSTALL += "rsync"
-
-# Handle power button through ACPI
-IMAGE_INSTALL += "eee-acpi-scripts"
 
 # Add /etc/os-release
 IMAGE_INSTALL += "os-release"
@@ -49,37 +44,34 @@ IMAGE_INSTALL += "packagegroup-airmap"
 IMAGE_INSTALL += "opencv"
 
 # Dronekit
-IMAGE_INSTALL_append = " dronekit-python"
+IMAGE_INSTALL += "dronekit-python"
 
-# MavROS
-IMAGE_INSTALL_append = " mavros realsense-camera"
+# MavROS won't build with pyro
+# IMAGE_INSTALL += "mavros"
+IMAGE_INSTALL += "realsense-camera"
 
 # Enable ros comm packagegroup
-IMAGE_INSTALL_append = " packagegroup-ros-comm"
+IMAGE_INSTALL += "packagegroup-ros-comm"
 
 # PX4
-IMAGE_INSTALL_append = " packagegroup-px4"
-
-# Platform configurations
-APPEND += "console=ttyS0,115200n8 console=tty1"
-GRUB_TIMEOUT = "3"
+IMAGE_INSTALL += "packagegroup-px4"
 
 # librealsense
 IMAGE_INSTALL += "librealsense"
 IMAGE_INSTALL += "librealsense-graphical-examples"
 
 #connectivity
-IMAGE_INSTALL += "backport-iwlwifi"
-IMAGE_INSTALL += "linux-firmware-iwlwifi-8000c"
 IMAGE_INSTALL += "hostapd"
 IMAGE_INSTALL += "autostart-hostapd"
 IMAGE_INSTALL += "autostart-supplicant"
 
-# LTE MODEM
+# LTE MODEM.
+# Removed autostart-modem as it has install conflicts with networkmanager
 IMAGE_INSTALL += "glibc-gconvs glibc-utils glibc-gconv-iso8859-1 modemmanager \
 	rpm icon-naming-utils libtool libndp libnl libinput \
-	libxdmcp networkmanager autostart-modem modem-enable \
+	libxdmcp networkmanager modem-enable \
 "
+
 addtask create_link after do_rootfs before do_image
 
 do_create_link() {
