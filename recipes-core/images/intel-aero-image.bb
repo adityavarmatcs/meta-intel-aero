@@ -30,6 +30,7 @@ IMAGE_INSTALL += "rng-tools"
 
 # Build tools
 IMAGE_INSTALL += "packagegroup-core-buildessential"
+IMAGE_INSTALL += "catkin"
 
 # Development/Debug tools
 IMAGE_INSTALL += "valgrind"
